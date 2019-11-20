@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             String personPhoto = String.valueOf(acct.getPhotoUrl());
+
             UserDomain userDomain = new UserDomain(personGivenName,personFamilyName,personName,personEmail,personPhoto);
+           // UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
             db.collection("Users").document(personId).set(userDomain);
             Intent intent=new Intent(MainActivity.this,Profile.class);
             intent.putExtra("userDomain",userDomain);
