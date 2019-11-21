@@ -1,10 +1,12 @@
 package com.example.chatapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -12,14 +14,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
-
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+    GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +25,15 @@ public class MainActivity extends AppCompatActivity {
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestProfile().build();
-        final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+
+
+
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,11 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
-
 
 
     @Override
@@ -59,23 +58,14 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
 
+            System.out.println("DATATATATATA: " + data.getExtras());
 
         }
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
         if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            String personPhoto = String.valueOf(acct.getPhotoUrl());
-
-            UserDomain userDomain = new UserDomain(personGivenName,personFamilyName,personName,personEmail,personPhoto);
-           // UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            db.collection("Users").document(personId).set(userDomain);
-            Intent intent=new Intent(MainActivity.this,Profile.class);
-            intent.putExtra("userDomain",userDomain);
+            Intent intent = new Intent(MainActivity.this, Profile.class);
+            intent.putExtra("acct", acct);
             startActivity(intent);
 
         }
@@ -85,15 +75,9 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            System.out.println("AAAAAAAAA"+account.toString());
 
-            // Signed in successfully, show authenticated UI.
-            //updateUI(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
-            //updateUI(null);
         }
     }
 }
