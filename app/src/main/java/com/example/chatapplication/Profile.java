@@ -168,7 +168,7 @@ public class Profile extends AppCompatActivity {
                                 UploadTask uploadTask = storageRef.putBytes(data);
 
                                 UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), personPhoto, document.getString("uniqueId"),Password.getText().toString());
-                                System.out.println("USERDOMAIN"+userDomain.toString());
+                                //System.out.println("USERDOMAIN"+userDomain.toString());
                                 db.collection("Users").document(personId).set(userDomain);
 
 
@@ -182,7 +182,7 @@ public class Profile extends AppCompatActivity {
                                 UploadTask uploadTask = storageRef.putBytes(data);
                                 uuid= UUID.randomUUID();
                                 UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), personPhoto, uuid.toString(),Password.getText().toString());
-                                System.out.println("USERDOMAIN"+userDomain.toString());
+                                //System.out.println("USERDOMAIN"+userDomain.toString());
                                 db.collection("Users").document(personId).set(userDomain);
                             }
                         } else {
@@ -193,7 +193,8 @@ public class Profile extends AppCompatActivity {
 
 
 
-
+                Intent intent1 = new Intent(Profile.this,ChatActivity.class);
+                startActivity(intent1);
 
                 /*
 
