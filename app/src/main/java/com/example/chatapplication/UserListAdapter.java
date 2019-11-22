@@ -1,7 +1,6 @@
 package com.example.chatapplication;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserListAdapter extends ArrayAdapter<UserDomain> {
@@ -37,9 +35,11 @@ public class UserListAdapter extends ArrayAdapter<UserDomain> {
         TextView Name = itemRowView.findViewById(R.id.Name);
         TextView UserId = itemRowView.findViewById(R.id.UserId);
         ImageView ProfilePicture = itemRowView.findViewById(R.id.ProfilePicture);
-        Name.setText(userDomainList.get(position).firstName);
+        Name.setText(userDomainList.get(position).firstName+" "+userDomainList.get(position).getLastName());
         UserId.setText(userDomainList.get(position).userName);
-        Picasso.get().load(userDomainList.get(position).profice_pic).into(ProfilePicture);
+        System.out.println(userDomainList.get(position).toString());
+        if(!String.valueOf(userDomainList.get(position).profice_pic).equals(null)){
+        Picasso.get().load(userDomainList.get(position).profice_pic).into(ProfilePicture);}
         return itemRowView;
     }
 

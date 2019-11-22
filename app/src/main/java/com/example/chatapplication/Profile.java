@@ -3,6 +3,7 @@ package com.example.chatapplication;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,6 +57,7 @@ public class Profile extends AppCompatActivity {
     UUID uuid;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String databaseProfileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,21 +65,17 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         ProfilePicture = findViewById(R.id.ProfilePicture);
-        FirstName  = findViewById(R.id.FirstName);
+        FirstName = findViewById(R.id.FirstName);
         LastName = findViewById(R.id.LastName);
         Email = findViewById(R.id.Email);
         UserName = findViewById(R.id.UserName);
         Save = findViewById(R.id.Save);
         Password = findViewById(R.id.Password);
-        ConfirmPassword =findViewById(R.id.ConfirmPassword);
-
-
-
+        ConfirmPassword = findViewById(R.id.ConfirmPassword);
 
 
         Intent intent = getIntent();
         GoogleSignInAccount acct = (GoogleSignInAccount) intent.getParcelableExtra("acct");
-
 
 
         personName = acct.getDisplayName();
@@ -103,53 +103,28 @@ public class Profile extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(FirstName.getText()==null){
-                    FirstName.setError("Cannot be null");
-                }
-                if(LastName.getText()==null){
-                    LastName.setError("Cannot be null");
-                }
-
-                if(Email.getText()==null){
-                    Email.setError("Cannot be null");
-                }
-
-                if(UserName.getText()==null){
-                    UserName.setError("Cannot be null");
-                }
-
-                if(Password.getText()==null){
-                    Password.setError("Cannot be null");
-                }
-
-                if(ConfirmPassword.getText()==null){
-                    ConfirmPassword.setError("Cannot be null");
-                }
-
-                if(!Password.getText().toString().equals(ConfirmPassword.getText().toString())){
-                    Password.setError("Password Missmatch");
-                    ConfirmPassword.setError("Password Missmatch");
-                }
-
-
-
-
-
-
-
+//                if (FirstName.getText().equals(null)) {
+//                    FirstName.setError("Cannot be null");
+//                } if (LastName.getText().equals(null)) {
+//                    LastName.setError("Cannot be null");
+//                } if (Email.getText().equals(null)) {
+//                    Email.setError("Cannot be null");
+//                } if (UserName.getText().equals(null)) {
+//                    UserName.setError("Cannot be null");
+//                } if (Password.getText().equals(null)) {
+//                    Password.setError("Cannot be null");
+//                } if (ConfirmPassword.getText().equals(null)) {
+//                    ConfirmPassword.setError("Cannot be null");
+//                } if (!Password.getText().toString().equals(ConfirmPassword.getText().toString()) && !Password.getText().equals(null)) {
+//                    Password.setError("Password Missmatch");
+//                    ConfirmPassword.setError("Password Missmatch");
+//                } else {
 
 
                 DocumentReference docRef = db.collection("Users").document(personId);
-
 
 
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -164,10 +139,22 @@ public class Profile extends AppCompatActivity {
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                                 byte[] data = baos.toByteArray();
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageRef = storage.getReference().child("ProfilePictures/"+personId+".png");
+                                StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
                                 UploadTask uploadTask = storageRef.putBytes(data);
 
-                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), personPhoto, document.getString("uniqueId"),Password.getText().toString());
+
+                                storage.getReference("ProfilePictures/" + personId + ".png");
+                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        System.out.println("Database Url: " + uri.toString());
+                                        //personPhoto = String.valueOf(uri);
+                                        //do your stuff- uri.toString() will give you download URL\\
+                                    }
+                                });
+
+
+                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(),Password.getText().toString(), personPhoto, document.getString("uniqueId"));
                                 //System.out.println("USERDOMAIN"+userDomain.toString());
                                 db.collection("Users").document(personId).set(userDomain);
 
@@ -178,10 +165,23 @@ public class Profile extends AppCompatActivity {
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                                 byte[] data = baos.toByteArray();
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageRef = storage.getReference().child("ProfilePictures/"+personId+".png");
+                                StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
                                 UploadTask uploadTask = storageRef.putBytes(data);
-                                uuid= UUID.randomUUID();
-                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), personPhoto, uuid.toString(),Password.getText().toString());
+
+
+                                storage.getReference("ProfilePictures/" + personId + ".png");
+                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        System.out.println("Database Url: " + uri.toString());
+                                        //personPhoto = String.valueOf(uri);
+                                        //do your stuff- uri.toString() will give you download URL\\
+                                    }
+                                });
+
+
+                                uuid = UUID.randomUUID();
+                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), personPhoto, uuid.toString());
                                 //System.out.println("USERDOMAIN"+userDomain.toString());
                                 db.collection("Users").document(personId).set(userDomain);
                             }
@@ -192,18 +192,21 @@ public class Profile extends AppCompatActivity {
                 });
 
 
-
-                Intent intent1 = new Intent(Profile.this,ChatActivity.class);
+                Intent intent1 = new Intent(Profile.this, ChatActivity.class);
                 startActivity(intent1);
 
                 /*
 
                  */
-
-
             }
+
+
+        //}
+
         });
     }
+
+
 
 
 

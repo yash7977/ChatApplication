@@ -18,7 +18,7 @@ public class UserDomain implements Serializable {
     String uniqueId ;
 
 
-    public UserDomain(String firstName, String lastName, String email, String userName, String profice_pic, String uniqueId,String password) {
+    public UserDomain(String firstName, String lastName, String email, String userName, String password, String profice_pic, String uniqueId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -27,7 +27,6 @@ public class UserDomain implements Serializable {
         this.profice_pic = profice_pic;
         this.uniqueId = uniqueId;
     }
-
 
     @Override
     public String toString() {
