@@ -38,10 +38,10 @@ public class ChatActivity extends AppCompatActivity {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         UserDomain userDomain = new UserDomain(document.getData().get("firstName").toString(),document.getData().get("lastName").toString(),document.getData().get("email").toString(),document.getData().get("userName").toString(),document.getData().get("password").toString(),document.getData().get("profice_pic").toString(),document.getData().get("uniqueId").toString());
-                        
+
                         list.add(userDomain);
                     }
-                    System.out.println("//////////"+list.size());
+                    //System.out.println("//////////"+list.size());
                     UserListAdapter userListAdapter = new UserListAdapter(ChatActivity.this,list);
                     listView.setAdapter(userListAdapter);
 

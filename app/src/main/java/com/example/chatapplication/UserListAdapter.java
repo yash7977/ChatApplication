@@ -19,6 +19,7 @@ public class UserListAdapter extends ArrayAdapter<UserDomain> {
     List<UserDomain> userDomainList;
     Context context;
 
+
     public UserListAdapter(@NonNull Context context, List<UserDomain> userDomains) {
 
         super(context, R.layout.user_list_view);
@@ -37,9 +38,12 @@ public class UserListAdapter extends ArrayAdapter<UserDomain> {
         ImageView ProfilePicture = itemRowView.findViewById(R.id.ProfilePicture);
         Name.setText(userDomainList.get(position).firstName+" "+userDomainList.get(position).getLastName());
         UserId.setText(userDomainList.get(position).userName);
-        System.out.println(userDomainList.get(position).toString());
+        //System.out.println(userDomainList.get(position).toString());
         if(!String.valueOf(userDomainList.get(position).profice_pic).equals(null)){
-        Picasso.get().load(userDomainList.get(position).profice_pic).into(ProfilePicture);}
+            Picasso.get().load(String.valueOf(userDomainList.get(position).profice_pic)).into(ProfilePicture);
+            System.out.println("ListView: "+userDomainList.get(position).profice_pic);
+        }
+
         return itemRowView;
     }
 

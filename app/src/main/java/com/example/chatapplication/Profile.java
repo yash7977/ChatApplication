@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +59,8 @@ public class Profile extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String databaseProfileUrl;
+    DocumentSnapshot document;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,32 +134,36 @@ public class Profile extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
+                            document = task.getResult();
                             if (document != null && document.exists()) {
-                                Log.d("DOCREFFFF: ", document.getString("uniqueId"));//Print the name
+                                //Log.d("DOCREFFFF: ", document.getString("uniqueId"));//Print the name
                                 Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
+
+
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                                 byte[] data = baos.toByteArray();
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
-                                UploadTask uploadTask = storageRef.putBytes(data);
+                                final StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");;
+                                final UploadTask uploadTask = storageRef.putBytes(data);
 
-
-                                storage.getReference("ProfilePictures/" + personId + ".png");
                                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        System.out.println("Database Url: " + uri.toString());
-                                        //personPhoto = String.valueOf(uri);
-                                        //do your stuff- uri.toString() will give you download URL\\
+                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(),Password.getText().toString(), uri.toString(), document.getString("uniqueId"));
+                                        //System.out.println("USERDOMAIN"+userDomain.toString());
+                                        db.collection("Users").document(personId).set(userDomain);
                                     }
                                 });
 
 
-                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(),Password.getText().toString(), personPhoto, document.getString("uniqueId"));
-                                //System.out.println("USERDOMAIN"+userDomain.toString());
-                                db.collection("Users").document(personId).set(userDomain);
+
+
+
+
+
+
 
 
                             } else {
@@ -169,21 +176,30 @@ public class Profile extends AppCompatActivity {
                                 UploadTask uploadTask = storageRef.putBytes(data);
 
 
-                                storage.getReference("ProfilePictures/" + personId + ".png");
                                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        System.out.println("Database Url: " + uri.toString());
-                                        //personPhoto = String.valueOf(uri);
-                                        //do your stuff- uri.toString() will give you download URL\\
+                                        uuid = UUID.randomUUID();
+
+                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid.toString());
+                                        //System.out.println("USERDOMAIN"+userDomain.toString());
+                                        db.collection("Users").document(personId).set(userDomain);
+
                                     }
                                 });
 
 
-                                uuid = UUID.randomUUID();
-                                UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), personPhoto, uuid.toString());
-                                //System.out.println("USERDOMAIN"+userDomain.toString());
-                                db.collection("Users").document(personId).set(userDomain);
+
+
+
+
+                                //do your stuff- uri.toString() will give you download URL\\
+
+
+
+
+
                             }
                         } else {
                             Log.d("TAG", "get failed with ", task.getException());
@@ -221,6 +237,15 @@ public class Profile extends AppCompatActivity {
 
             imageupload=imageBitmap;
             ProfilePicture.setImageBitmap(imageBitmap);
+
+//            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("ProfilePictures/" + personId + ".png");
+//            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    //personPhoto=uri.toString();
+//                    //do your stuff- uri.toString() will give you download URL\\
+//                }
+//            });
 
         }
     }
