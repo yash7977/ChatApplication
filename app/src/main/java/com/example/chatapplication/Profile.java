@@ -87,6 +87,7 @@ public class Profile extends AppCompatActivity {
         personEmail = acct.getEmail();
         personId = acct.getId();
         personPhoto = String.valueOf(acct.getPhotoUrl());
+        System.out.println("personName"+personName);
 
 
         FirstName.setText(personGivenName);

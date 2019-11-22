@@ -2,6 +2,8 @@ package com.example.chatapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
 
-    ListView listView;
+    RecyclerView ChatRecyclerView;
     ArrayList<UserDomain> list = new ArrayList<>();
 
     @Override
@@ -25,7 +27,8 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        listView=findViewById(R.id.ChatListView);
+        ChatRecyclerView=findViewById(R.id.ChatRecyclerView);
+        ChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -43,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                     //System.out.println("//////////"+list.size());
                     UserListAdapter userListAdapter = new UserListAdapter(ChatActivity.this,list);
-                    listView.setAdapter(userListAdapter);
+                    ChatRecyclerView.setAdapter(userListAdapter);
 
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
