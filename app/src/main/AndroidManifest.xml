@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".TabsExample"></activity>
+        <activity android:name=".GroupsActivityTab" />
+        <activity android:name=".OnlineUserTab" />
+        <activity android:name=".CreateTripActivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".Profile" />
         <activity android:name=".MainActivity">
             <intent-filter>

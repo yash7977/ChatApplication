@@ -209,7 +209,7 @@ public class Profile extends AppCompatActivity {
                 });
 
 
-                Intent intent1 = new Intent(Profile.this, ChatActivity.class);
+                Intent intent1 = new Intent(Profile.this, TabsExample.class);
                 startActivity(intent1);
 
                 /*
