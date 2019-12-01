@@ -79,6 +79,7 @@ public class Profile extends AppCompatActivity {
 
         Intent intent = getIntent();
         GoogleSignInAccount acct = (GoogleSignInAccount) intent.getParcelableExtra("acct");
+        System.out.println("PROFILE PAGE :" + acct.toString());
 
 
         personName = acct.getDisplayName();
