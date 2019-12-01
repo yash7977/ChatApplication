@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupTab">
+    tools:context=".CreateGroupActivity">
 
-    <ListView
-        android:id="@+id/GroupsList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/GroupName"
+        android:layout_width="245dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="96dp"
+        android:gravity="center"
+        android:hint="Group Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

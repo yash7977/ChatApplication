@@ -4,4 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateTripActivity"/>
+    tools:context=".CreateTripActivity">
+
+    <EditText
+        android:id="@+id/TripName"
+        android:layout_width="272dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="156dp"
+        android:gravity="center"
+        android:hint="Trip Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/TripCoverPhoto"
+        android:layout_width="404dp"
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001"
+        app:srcCompat="@drawable/ic_address" />
+
+    <Button
+        android:id="@+id/StartLocation"
+        android:layout_width="272dp"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:hint="Start Location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TripCoverPhoto"
+        app:layout_constraintVertical_bias="0.341" />
+
+    <Button
+        android:id="@+id/Destination"
+        android:layout_width="272dp"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:hint="Destination"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TripCoverPhoto"
+        app:layout_constraintVertical_bias="0.451" />
+
+    <Button
+        android:id="@+id/CreateTrip"
+        android:layout_width="189dp"
+        android:layout_height="52dp"
+        android:text="Create Trip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TripCoverPhoto"
+        app:layout_constraintVertical_bias="0.631" />
+</androidx.constraintlayout.widget.ConstraintLayout>

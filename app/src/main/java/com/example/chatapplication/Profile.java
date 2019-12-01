@@ -160,13 +160,6 @@ public class Profile extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
                             } else {
                                 Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -209,7 +202,7 @@ public class Profile extends AppCompatActivity {
                 });
 
 
-                Intent intent1 = new Intent(Profile.this, TabsExample.class);
+                Intent intent1 = new Intent(Profile.this, CreateTripActivity.class);
                 startActivity(intent1);
 
                 /*

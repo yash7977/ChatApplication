@@ -19,7 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class OnlineUserTab extends Fragment{
+public class UserTab extends Fragment{
 
 
     private RecyclerView mRecyclerView;

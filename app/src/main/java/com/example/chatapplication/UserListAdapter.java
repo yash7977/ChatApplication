@@ -65,10 +65,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
     }
 
-
-
-
-
 //    public UserListAdapter(@NonNull Context context, List<UserDomain> userDomains) {
 //
 //        super(context, R.layout.user_list_view);
