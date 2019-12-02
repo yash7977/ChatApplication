@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,15 +28,18 @@ import java.util.ArrayList;
 
 public class GroupTab extends Fragment {
 
-
+    View view1;
     private RecyclerView mRecyclerView;
     ArrayList<TripDomain> list = new ArrayList<>();
+//    Context mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.activity_groups_tab, container, false);
-        mRecyclerView=view.findViewById(R.id.GroupsList);
+//        mContext = getActivity().getApplicationContext();
+
+         view1= inflater.inflate(R.layout.activity_groups_tab, container, false);
+        mRecyclerView=view1.findViewById(R.id.GroupsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -47,19 +55,19 @@ public class GroupTab extends Fragment {
                         TripDomain tripDomain = new TripDomain();
                         tripDomain.setUniqueId(document.getData().get("uniqueId").toString());
                         tripDomain.setName(document.getData().get("name").toString());
-                        //tripDomain.setCoverPic(document.getData().get("coverPic").toString());
+                        tripDomain.setCoverPic(document.getData().get("coverPic").toString());
                         list.add(tripDomain);
                     }
-                    //System.out.println("//////////"+list.size());
                     TripListAdapter tripListAdapter = new TripListAdapter(list,getContext());
                     mRecyclerView.setAdapter(tripListAdapter);
+
 
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
         });
-        return view;
+        return view1;
     }
 }
 

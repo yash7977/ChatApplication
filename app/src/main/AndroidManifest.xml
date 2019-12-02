@@ -33,7 +33,6 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".CreateGroupActivity" />
         <activity android:name=".TripChatActivity" />
         <activity android:name=".TabsExample" />
         <activity android:name=".GroupTab" />

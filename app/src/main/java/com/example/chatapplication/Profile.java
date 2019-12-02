@@ -1,10 +1,12 @@
 package com.example.chatapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -50,6 +53,7 @@ public class Profile extends AppCompatActivity {
 
 
 
+
     String personName;
     String personGivenName;
     String personFamilyName;
@@ -59,7 +63,6 @@ public class Profile extends AppCompatActivity {
 
     int REQUEST_IMAGE_CAPTURE=123;
     Bitmap imageupload=null;
-    UUID uuid;
     private FirebaseAuth mAuth;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -81,13 +84,20 @@ public class Profile extends AppCompatActivity {
         Password = findViewById(R.id.Password);
         ConfirmPassword = findViewById(R.id.ConfirmPassword);
 
+
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(Profile.this);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
         mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         GoogleSignInAccount acct = (GoogleSignInAccount) intent.getParcelableExtra("acct");
-        System.out.println("PROFILE PAGE :" + acct.toString());
+        final String uuid = UUID.randomUUID().toString();
 
-        System.out.println(mAuth.getCurrentUser());
+
+
 
         personName = acct.getDisplayName();
         personGivenName = acct.getGivenName();
@@ -158,7 +168,7 @@ public class Profile extends AppCompatActivity {
 
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(),Password.getText().toString(), uri.toString(), document.getString("uniqueId"));
+                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), document.getString("uniqueId"));
                                         db.collection("Users").document(personId).set(userDomain);
                                     }
                                 });
@@ -173,15 +183,15 @@ public class Profile extends AppCompatActivity {
                                                 } else {
                                                     // If sign in fails, display a message to the user.
                                                     Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                                    Toast.makeText(Profile.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(Profile.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                                 }
 
                                             }
                                         });
 
 
-
-                            } else {
+                            }
+                             else {
                                 Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -217,10 +227,13 @@ public class Profile extends AppCompatActivity {
 
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        uuid = UUID.randomUUID();
 
-                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid.toString());
+
+                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid);
                                         db.collection("Users").document(personId).set(userDomain);
+
+                                        editor.putString("CurrentUser",userDomain.getUniqueId());
+                                        editor.commit();
 
                                     }
                                 });

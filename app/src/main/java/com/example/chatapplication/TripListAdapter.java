@@ -1,15 +1,20 @@
 package com.example.chatapplication;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,26 +25,49 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
     Context context;
 
 
+    SharedPreferences sharedPreferences;
+     String CurrentUser;
+
     public TripListAdapter(List<TripDomain> tripDomainList, Context context) {
         this.tripDomainList = tripDomainList;
         this.context = context;
+        sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        CurrentUser = sharedPreferences.getString("CurrentUser",null);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.trip_list_view, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+
         return viewHolder;
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.TripName.setText(tripDomainList.get(position).getName());
         holder.TripDate.setText("DATE");
-        Picasso.get().load(tripDomainList.get(position).getCoverPic()).into(holder.TripCover);
+        Picasso.get().load(tripDomainList.get(position).CoverPic).into(holder.TripCover);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(CurrentUser);
+                if (tripDomainList.get(position).getUsers().contains(CurrentUser)) {
+                    Intent intent = new Intent(context, TripChatActivity.class);
+                    context.startActivity(intent);
+                }else {
+                    Toast.makeText(context, "Not A Member", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
 
     }
 
@@ -60,6 +88,15 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
             TripName =itemView.findViewById(R.id.TripName);
             TripDate = itemView.findViewById(R.id.TripDate);
             TripCover = itemView.findViewById(R.id.TripCover);
+
+
         }
+
+
+
+
     }
+
+
+
 }
