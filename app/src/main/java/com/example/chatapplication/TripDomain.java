@@ -8,11 +8,11 @@ public class TripDomain {
     String UniqueId;
     String Name;
     String CoverPic;
-    Integer createdBy;
+    String createdBy;
     LatLng start_postion;
     LatLng destination;
-    ArrayList<MessagesDomain> messagesDomains = new ArrayList<>();
-    ArrayList<String> users = new ArrayList<>();
+    ArrayList<MessagesDomain> messagesDomains;
+    ArrayList<String> users;
 
 
 
@@ -20,7 +20,7 @@ public class TripDomain {
     public TripDomain() {
     }
 
-    public TripDomain(String uniqueId, String name, String coverPic, Integer createdBy, LatLng start_postion, LatLng destination, ArrayList<MessagesDomain> messagesDomains, ArrayList<String> users) {
+    public TripDomain(String uniqueId, String name, String coverPic, String createdBy, LatLng start_postion, LatLng destination, ArrayList<MessagesDomain> messagesDomains, ArrayList<String> users) {
         UniqueId = uniqueId;
         Name = name;
         CoverPic = coverPic;
@@ -29,6 +29,17 @@ public class TripDomain {
         this.destination = destination;
         this.messagesDomains = messagesDomains;
         this.users = users;
+    }
+
+    public TripDomain(String uniqueId, String name, String coverPic, String createdBy, LatLng start_postion, LatLng destination) {
+        UniqueId = uniqueId;
+        Name = name;
+        CoverPic = coverPic;
+        this.createdBy = createdBy;
+        this.start_postion = start_postion;
+        this.destination = destination;
+        this.messagesDomains = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public String getUniqueId() {
@@ -49,11 +60,11 @@ public class TripDomain {
 
 
 
-    public Integer getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -88,11 +99,11 @@ public class TripDomain {
         CoverPic = coverPic;
     }
 
-    public LatLng getStart_ostion() {
+    public LatLng getStart_postion() {
         return start_postion;
     }
 
-    public void setStart_ostion(LatLng start_postion) {
+    public void setStart_postion(LatLng start_postion) {
         this.start_postion = start_postion;
     }
 

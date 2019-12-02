@@ -43,10 +43,8 @@ public class UserTab extends Fragment{
 
                         list.add(userDomain);
                     }
-                    //System.out.println("//////////"+list.size());
                     UserListAdapter userListAdapter = new UserListAdapter(getContext(),list);
                     mRecyclerView.setAdapter(userListAdapter);
-
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }

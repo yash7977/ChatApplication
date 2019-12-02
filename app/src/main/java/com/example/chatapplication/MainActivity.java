@@ -26,11 +26,14 @@ public class MainActivity extends AppCompatActivity {
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestProfile().build();
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient (MainActivity.this, gso);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient (MainActivity.this, gso);
 
 
-        googleSignInClient.silentSignIn()
+        mGoogleSignInClient.silentSignIn()
                 .addOnCompleteListener(
                         this,
                         new OnCompleteListener<GoogleSignInAccount>() {
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
 
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -68,9 +71,12 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);;
         if (acct != null) {
 
+
+            System.out.println("Token "+acct.getIdToken());
+            System.out.println("Profile Name: "+acct.getDisplayName() );
             Intent intent = new Intent(MainActivity.this, Profile.class);
             intent.putExtra("acct",acct);
 
@@ -83,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-//            String idToken = account.getIdToken();
+            String idToken = account.getDisplayName();
+            System.out.println("IDNAME: "+idToken);
         } catch (ApiException e) {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
         }
@@ -93,3 +100,4 @@ public class MainActivity extends AppCompatActivity {
 Client Id: 290050356453-o6esep8f0dj29na53t4i2kdik4d3mecd.apps.googleusercontent.com
 Client Secrete: m14j3ce6VYQrF8oSpI13ddgB
 */
+//JSON ClientId: 507080580814-k9mne56bjo1isgip1v5s9b64e2kifau0.apps.googleusercontent.com
