@@ -7,36 +7,38 @@
     tools:context=".TripChatActivity">
 
     <TextView
-        android:id="@+id/GroupNamw"
-        android:layout_width="415dp"
-        android:layout_height="49dp"
+        android:id="@+id/GroupName"
+        android:layout_width="406dp"
+        android:layout_height="79dp"
+        android:gravity="center"
         android:hint="GroupName"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="412dp"
-        android:layout_height="650dp"
+        android:layout_width="409dp"
+        android:layout_height="566dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GroupNamw"
+        app:layout_constraintTop_toBottomOf="@+id/GroupName"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/Message"
         android:layout_width="345dp"
         android:layout_height="86dp"
+        android:gravity="center"
         android:hint="Message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/GroupNamw"
+        app:layout_constraintTop_toTopOf="@+id/GroupName"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView

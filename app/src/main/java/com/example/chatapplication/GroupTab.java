@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GroupTab extends Fragment {
 
@@ -50,12 +51,20 @@ public class GroupTab extends Fragment {
                 if (task.isSuccessful()) {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        System.out.println("DOCUMENT:    "+document.getData().toString());
+                        System.out.println("DOCUMENT:    "+((ArrayList) document.getData().get("users")).get(0));
+
 
                         TripDomain tripDomain = new TripDomain();
+                        tripDomain.users=new ArrayList<>();
                         tripDomain.setUniqueId(document.getData().get("uniqueId").toString());
                         tripDomain.setName(document.getData().get("name").toString());
                         tripDomain.setCoverPic(document.getData().get("coverPic").toString());
+                        for (int i=0;i<((ArrayList) document.getData().get("users")).size();i++){
+                            tripDomain.users.add(((ArrayList) document.getData().get("users")).get(i).toString());
+                        }
+
+
+
                         list.add(tripDomain);
                     }
                     TripListAdapter tripListAdapter = new TripListAdapter(list,getContext());

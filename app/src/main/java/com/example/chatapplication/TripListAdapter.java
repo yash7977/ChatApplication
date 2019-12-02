@@ -57,7 +57,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(CurrentUser);
+                System.out.println("TRIPDOMAIN: "+tripDomainList.get(position).toString());
                 if (tripDomainList.get(position).getUsers().contains(CurrentUser)) {
                     Intent intent = new Intent(context, TripChatActivity.class);
                     context.startActivity(intent);

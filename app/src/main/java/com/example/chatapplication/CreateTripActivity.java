@@ -137,6 +137,7 @@ public class CreateTripActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Intent intent = new Intent(CreateTripActivity.this,TabsExample.class);
+                                                System.out.println("TripDomain"+tripDomain.toString());
                                                 startActivity(intent);
                                             }
                                         })
