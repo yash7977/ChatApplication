@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.println("Token "+acct.getIdToken());
             System.out.println("Profile Name: "+acct.getDisplayName() );
-            Intent intent = new Intent(MainActivity.this, Profile.class);
+            Intent intent = new Intent(MainActivity.this, TabsExample.class);
             intent.putExtra("acct",acct);
 
             startActivity(intent);
