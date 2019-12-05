@@ -1,15 +1,12 @@
 package com.example.chatapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
@@ -44,9 +39,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         this.messagesDomainList = messagesDomains;
         this.context = context;
         this.tripId = tripId;
-        sharedPreferences = PreferenceManager
+        this.sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context.getApplicationContext());
-        CurrentUser = sharedPreferences.getString("CurrentUser",null);
+        this.CurrentUser = sharedPreferences.getString("CurrentUser",null);
     }
 
     @NonNull
@@ -63,7 +58,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.MessageText.setText(messagesDomainList.get(position).getMessage());
-        System.out.println(messagesDomainList.size());
+        System.out.println("MEssageDomainListSize"+messagesDomainList.size());
         //holder.UserName.setText(messagesDomainList.get(position).getSentBy());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +66,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             public void onClick(View v) {
                 if(messagesDomainList.get(position).getSentBy().equals(CurrentUser)){
                     messagesDomainList.remove(position);
+                    notifyDataSetChanged();
                     documentReference = db.collection("Trips").document(tripId);
                     documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -79,6 +75,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                                 document = task.getResult();
                                 if (document != null && document.exists()) {
                                     document.getData().get("messagesDomains");
+
 
 
                                 }
