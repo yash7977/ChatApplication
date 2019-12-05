@@ -54,7 +54,10 @@ public class CreateTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_trip);
 
-        TripCoverPhoto=findViewById(R.id.TripCoverPhoto);
+
+
+
+
         TripCoverPhoto=findViewById(R.id.TripCoverPhoto);
         StartLocation = findViewById(R.id.StartLocation);
         Destination = findViewById(R.id.Destination);
@@ -67,11 +70,10 @@ public class CreateTripActivity extends AppCompatActivity {
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
-
         final String CurrentUser = sharedPreferences.getString("CurrentUser",null);
-        System.out.println(CurrentUser+"Trip created");
 
-         StartLocation.setOnClickListener(new View.OnClickListener() {
+
+        StartLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateTripActivity.this,MapsActivity.class);
@@ -96,9 +98,11 @@ public class CreateTripActivity extends AppCompatActivity {
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
-
             }
         });
+
+
+
 
 
         CreateTrip.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +154,15 @@ public class CreateTripActivity extends AppCompatActivity {
                 });
 
 
+
+
+
+
             }
         });
+
+
+
 
     }
 
@@ -170,6 +181,8 @@ public class CreateTripActivity extends AppCompatActivity {
         }
 
 
+
+
         else if(data.getStringExtra("resultCode").equals("1")){
             LatLng latLng =(LatLng) data.getExtras().get("latlong");
             System.out.println("RESULT");
@@ -183,6 +196,9 @@ public class CreateTripActivity extends AppCompatActivity {
             System.out.println(data.getStringExtra("resultCode")+data.getExtras().get("latlong").toString());
             tripDomain.destination = (LatLng) data.getExtras().get("latlong");
         }
+
+
+
 
     }
 }
