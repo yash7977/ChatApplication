@@ -51,7 +51,6 @@ public class GroupTab extends Fragment {
                 if (task.isSuccessful()) {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        System.out.println("DOCUMENT:    "+((ArrayList) document.getData().get("users")).get(0));
 
 
                         TripDomain tripDomain = new TripDomain();
@@ -59,9 +58,13 @@ public class GroupTab extends Fragment {
                         tripDomain.setUniqueId(document.getData().get("uniqueId").toString());
                         tripDomain.setName(document.getData().get("name").toString());
                         tripDomain.setCoverPic(document.getData().get("coverPic").toString());
-                        for (int i=0;i<((ArrayList) document.getData().get("users")).size();i++){
-                            tripDomain.users.add(((ArrayList) document.getData().get("users")).get(i).toString());
+                        System.out.println("TRIPDOMAIN UESRE "+Arrays.asList(document.getData().get("users")).size());
+                        if(document.getData().get("users")!=null){
+                            for (int i=0;i<((ArrayList) document.getData().get("users")).size();i++){
+                                tripDomain.users.add(((ArrayList) document.getData().get("users")).get(i).toString());
+                            }
                         }
+
 
 
 

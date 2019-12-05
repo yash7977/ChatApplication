@@ -2,12 +2,12 @@ package com.example.chatapplication;
 
 public class MessagesDomain {
 
-    Integer UniqueId;
+    String UniqueId;
     String message;
-    Integer sentBy;
+    String sentBy;
 
 
-    public MessagesDomain(Integer uniqueId, String message, Integer sentBy) {
+    public MessagesDomain(String uniqueId, String message, String sentBy) {
         UniqueId = uniqueId;
         this.message = message;
         this.sentBy = sentBy;
@@ -18,11 +18,11 @@ public class MessagesDomain {
     }
 
 
-    public Integer getUniqueId() {
+    public String getUniqueId() {
         return UniqueId;
     }
 
-    public void setUniqueId(Integer uniqueId) {
+    public void setUniqueId(String uniqueId) {
         UniqueId = uniqueId;
     }
 
@@ -34,11 +34,11 @@ public class MessagesDomain {
         this.message = message;
     }
 
-    public Integer getSentBy() {
+    public String getSentBy() {
         return sentBy;
     }
 
-    public void setSentBy(Integer sentBy) {
+    public void setSentBy(String sentBy) {
         this.sentBy = sentBy;
     }
 }

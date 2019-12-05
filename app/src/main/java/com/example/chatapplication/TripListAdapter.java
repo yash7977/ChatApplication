@@ -60,6 +60,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
                 System.out.println("TRIPDOMAIN: "+tripDomainList.get(position).toString());
                 if (tripDomainList.get(position).getUsers().contains(CurrentUser)) {
                     Intent intent = new Intent(context, TripChatActivity.class);
+                    intent.putExtra("TripId",tripDomainList.get(position).getUniqueId());
                     context.startActivity(intent);
                 }else {
                     Toast.makeText(context, "Not A Member", Toast.LENGTH_SHORT).show();

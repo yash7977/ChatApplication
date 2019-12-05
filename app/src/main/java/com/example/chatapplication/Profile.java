@@ -233,6 +233,7 @@ public class Profile extends AppCompatActivity {
                                         db.collection("Users").document(personId).set(userDomain);
 
                                         editor.putString("CurrentUser",userDomain.getUniqueId());
+                                        editor.putString("Uid",personId);
                                         editor.commit();
 
                                     }
