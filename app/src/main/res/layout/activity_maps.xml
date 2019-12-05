@@ -36,7 +36,7 @@
         android:id="@+id/SearchButton"
         android:layout_width="87dp"
         android:layout_height="44dp"
-        android:text="Button"
+        android:text="@string/places_autocomplete_search_hint"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.95"

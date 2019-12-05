@@ -80,14 +80,3 @@ public class GroupTab extends Fragment {
     }
 }
 
-
-/*
-String UniqueId;
-    String Name;
-    String CoverPic;
-    String createdBy;
-    LatLng start_postion;
-    LatLng destination;
-    ArrayList<MessagesDomain> messagesDomains;
-    ArrayList<String> users;
- */

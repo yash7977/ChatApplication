@@ -55,14 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         if (acct != null) {
 
 
-            System.out.println("Token "+acct.getIdToken());
-            System.out.println("Profile Name: "+acct.getDisplayName() );
+//            System.out.println("Token "+acct.getIdToken());
+//            System.out.println("Profile Name: "+acct.getDisplayName() );
             Intent intent = new Intent(MainActivity.this, Profile.class);
             intent.putExtra("acct",acct);
 
@@ -92,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             String idToken = account.getDisplayName();
             System.out.println("IDNAME: "+idToken);
         } catch (ApiException e) {
+            System.out.println("ERROR"+e.toString());
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
         }
     }

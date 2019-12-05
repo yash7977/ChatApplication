@@ -232,8 +232,10 @@ public class Profile extends AppCompatActivity {
                                         UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid);
                                         db.collection("Users").document(personId).set(userDomain);
 
-                                        editor.putString("CurrentUser",userDomain.getUniqueId());
+                                        editor.putString("CurrentUser",userDomain.email);
+
                                         editor.commit();
+
 
                                     }
                                 });
@@ -241,11 +243,11 @@ public class Profile extends AppCompatActivity {
 
                             }
                         } else {
-                            Log.d("TAG", "get failed with ", task.getException());
+                            Log.d("TAG", "failure", task.getException());
                         }
                     }
                 });
-                Intent intent1 = new Intent(Profile.this, CreateTripActivity.class);
+                Intent intent1 = new Intent(Profile.this, TabsExample.class);
                 startActivity(intent1);
 
 
@@ -256,10 +258,6 @@ public class Profile extends AppCompatActivity {
 
         });
     }
-
-
-
-
 
 
     @Override
