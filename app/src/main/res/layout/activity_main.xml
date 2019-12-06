@@ -9,13 +9,26 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="317dp"
-        android:layout_height="59dp"
+        android:layout_width="232dp"
+        android:layout_height="46dp"
         app:colorScheme="dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/WelcomeScreen"
+        android:layout_width="296dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Welcome to App"
+        android:textStyle="normal|bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

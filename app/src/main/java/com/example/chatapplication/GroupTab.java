@@ -58,7 +58,7 @@ public class GroupTab extends Fragment {
                         tripDomain.setUniqueId(document.getData().get("uniqueId").toString());
                         tripDomain.setName(document.getData().get("name").toString());
                         tripDomain.setCoverPic(document.getData().get("coverPic").toString());
-                        System.out.println("TRIPDOMAIN UESRE "+Arrays.asList(document.getData().get("users")).size());
+                        System.out.println("TRIPDOMAIN UESRE "+Arrays.asList(document.getData().get("users")).get(0));
                         if(document.getData().get("users")!=null){
                             for (int i=0;i<((ArrayList) document.getData().get("users")).size();i++){
                                 tripDomain.users.add(((ArrayList) document.getData().get("users")).get(i).toString());
@@ -83,14 +83,3 @@ public class GroupTab extends Fragment {
     }
 }
 
-
-/*
-String UniqueId;
-    String Name;
-    String CoverPic;
-    String createdBy;
-    LatLng start_postion;
-    LatLng destination;
-    ArrayList<MessagesDomain> messagesDomains;
-    ArrayList<String> users;
- */

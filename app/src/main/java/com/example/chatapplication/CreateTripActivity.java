@@ -21,11 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -64,10 +66,11 @@ public class CreateTripActivity extends AppCompatActivity {
         tripDomain.users = new ArrayList<>();
         tripDomain.messagesDomains = new ArrayList<>();
 
+
+        Gson gson = new Gson();
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
         final String CurrentUser = sharedPreferences.getString("CurrentUser",null);
-
 
 
         StartLocation.setOnClickListener(new View.OnClickListener() {

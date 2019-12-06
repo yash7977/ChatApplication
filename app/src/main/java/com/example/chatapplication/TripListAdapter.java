@@ -28,15 +28,17 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
     Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    SharedPreferences sharedPreferences;
+
      String CurrentUser;
+    SharedPreferences prefs;
 
     public TripListAdapter(List<TripDomain> tripDomainList, Context context) {
         this.tripDomainList = tripDomainList;
         this.context = context;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context.getApplicationContext());
-        CurrentUser = sharedPreferences.getString("CurrentUser",null);
+
+        prefs = context.getSharedPreferences(
+                "com.example.chatapplication", Context.MODE_PRIVATE);
+        CurrentUser = prefs.getString("CurrentUser",null);
     }
 
     @NonNull
@@ -64,6 +66,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         holder.JoinTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
                 tripDomainList.get(position).getUsers().add(CurrentUser);
                 DocumentReference documentReference = db.collection("Trips").document(tripDomainList.get(position).UniqueId);
                 documentReference.update("users",tripDomainList.get(position).getUsers());
@@ -75,7 +78,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("TRIPDOMAIN: "+tripDomainList.get(position).toString());
+
                 if (tripDomainList.get(position).getUsers().contains(CurrentUser)) {
                     Intent intent = new Intent(context, TripChatActivity.class);
                     intent.putExtra("TripId",tripDomainList.get(position).getUniqueId());

@@ -5,10 +5,13 @@
     <item android:id="@+id/nav_account"
         android:title="My Account"/>
 
-    <item android:id="@+id/nav_setings"
-        android:title="Settings"/>
+    <item android:id="@+id/nav_editProfile"
+        android:title="Edit Profile"/>
 
     <item android:id="@+id/nav_logout"
         android:title="Logout"/>
+
+    <item android:id="@+id/create_trip"
+        android:title="Create Trip"/>
 
 </menu>

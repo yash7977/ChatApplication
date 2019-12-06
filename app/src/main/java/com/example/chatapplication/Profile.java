@@ -51,16 +51,6 @@ public class Profile extends AppCompatActivity {
     EditText Password;
     EditText ConfirmPassword;
 
-
-
-
-    String personName;
-    String personGivenName;
-    String personFamilyName;
-    String personEmail;
-    String personId;
-    String personPhoto;
-
     int REQUEST_IMAGE_CAPTURE=123;
     Bitmap imageupload=null;
     private FirebaseAuth mAuth;
@@ -93,24 +83,32 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        GoogleSignInAccount acct = (GoogleSignInAccount) intent.getParcelableExtra("acct");
+        final UserDomain acct = (UserDomain) intent.getSerializableExtra("userDomain");
+        System.out.println("PROFILEACTIVITY: "+acct.toString());
+        final String personId_intent = intent.getStringExtra("personId_intent");
         final String uuid = UUID.randomUUID().toString();
 
 
 
 
-        personName = acct.getDisplayName();
-        personGivenName = acct.getGivenName();
-        personFamilyName = acct.getFamilyName();
-        personEmail = acct.getEmail();
-        personId = acct.getId();
-        personPhoto = String.valueOf(acct.getPhotoUrl());
 
 
-        FirstName.setText(personGivenName);
-        LastName.setText(personFamilyName);
-        Email.setText(personEmail);
-        Picasso.get().load(personPhoto).into(ProfilePicture);
+
+
+
+//        personName = nul;
+//        personGivenName = acct.getGivenName();
+//        personFamilyName = acct.getFamilyName();
+//        personEmail = acct.getEmail();
+//        personId = personId_intent;
+//        personPhoto = String.valueOf(acct.getProfice_pic());
+
+
+        FirstName.setText(acct.getFirstName());
+        LastName.setText(acct.getLastName());
+        Email.setText(acct.getEmail());
+        Picasso.get().load(acct.getProfice_pic()).into(ProfilePicture);
+        UserName.setText(acct.getUserName());
 
 
         ProfilePicture.setOnClickListener(new View.OnClickListener() {
@@ -145,109 +143,142 @@ public class Profile extends AppCompatActivity {
 //                } else {
 
 
-                DocumentReference docRef = db.collection("Users").document(personId);
-
+                DocumentReference docRef = db.collection("Users").document(acct.getUniqueId());
 
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful()){
                             document = task.getResult();
-                            if (document != null && document.exists()) {
-                                Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
+                            Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
 
 
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                                byte[] data = baos.toByteArray();
-                                FirebaseStorage storage = FirebaseStorage.getInstance();
-                                final StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
-                                final UploadTask uploadTask = storageRef.putBytes(data);
-
-                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), document.getString("uniqueId"));
-                                        db.collection("Users").document(personId).set(userDomain);
-                                    }
-                                });
-                                mAuth.createUserWithEmailAndPassword(Email.getText().toString(), Password.getText().toString())
-                                        .addOnCompleteListener(Profile.this, new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    // Sign in success, update UI with the signed-in user's information
-                                                    Log.d("TAG", "createUserWithEmail:success");
-                                                    FirebaseUser user = mAuth.getCurrentUser();
-                                                } else {
-                                                    // If sign in fails, display a message to the user.
-                                                    Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                                    Toast.makeText(Profile.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        });
-
-
-                            }
-                             else {
-                                Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                                byte[] data = baos.toByteArray();
-                                FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
-                                UploadTask uploadTask = storageRef.putBytes(data);
-
-                                mAuth.createUserWithEmailAndPassword(Email.getText().toString(), Password.getText().toString())
-                                        .addOnCompleteListener(Profile.this, new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    // Sign in success, update UI with the signed-in user's information
-                                                    Log.d("TAG", "createUserWithEmail:success");
-                                                    FirebaseUser user = mAuth.getCurrentUser();
-                                                } else {
-                                                    // If sign in fails, display a message to the user.
-                                                    Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                                    Toast.makeText(Profile.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        });
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            byte[] data = baos.toByteArray();
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            final StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId_intent + ".png");
+                            final UploadTask uploadTask = storageRef.putBytes(data);
 
 
 
-
-
-
-
-                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-
-
-                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid);
-                                        db.collection("Users").document(personId).set(userDomain);
-
-                                        editor.putString("CurrentUser",userDomain.getUniqueId());
-                                        editor.putString("Uid",personId);
-                                        editor.commit();
-
-                                    }
-                                });
-
-
-                            }
-                        } else {
-                            Log.d("TAG", "get failed with ", task.getException());
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), acct.getUniqueId());
+                                    db.collection("Users").document(personId_intent).set(userDomain);
+                                    Intent intent1 = new Intent(Profile.this, TabsExample.class);
+                                    startActivity(intent1);
+                                }
+                            });
                         }
                     }
                 });
-                Intent intent1 = new Intent(Profile.this, CreateTripActivity.class);
-                startActivity(intent1);
+
+
+
+
+//                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            document = task.getResult();
+//                            if (document != null && document.exists()) {
+//                                Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
+//
+//
+//                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//                                byte[] data = baos.toByteArray();
+//                                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                                final StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
+//                                final UploadTask uploadTask = storageRef.putBytes(data);
+//
+//                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//
+//                                    @Override
+//                                    public void onSuccess(Uri uri) {
+//                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), document.getString("uniqueId"));
+//                                        db.collection("Users").document(personId).set(userDomain);
+//                                    }
+//                                });
+//                                mAuth.createUserWithEmailAndPassword(Email.getText().toString(), Password.getText().toString())
+//                                        .addOnCompleteListener(Profile.this, new OnCompleteListener<AuthResult>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    // Sign in success, update UI with the signed-in user's information
+//                                                    Log.d("TAG", "createUserWithEmail:success");
+//                                                    FirebaseUser user = mAuth.getCurrentUser();
+//                                                } else {
+//                                                    // If sign in fails, display a message to the user.
+//                                                    Log.w("TAG", "createUserWithEmail:failure", task.getException());
+//                                                    Toast.makeText(Profile.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                                                }
+//
+//                                            }
+//                                        });
+//
+//
+//                            }
+//                             else {
+//                                Bitmap bitmap = ((BitmapDrawable) ProfilePicture.getDrawable()).getBitmap();
+//                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//                                byte[] data = baos.toByteArray();
+//                                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                                StorageReference storageRef = storage.getReference().child("ProfilePictures/" + personId + ".png");
+//                                UploadTask uploadTask = storageRef.putBytes(data);
+//
+//                                mAuth.createUserWithEmailAndPassword(Email.getText().toString(), Password.getText().toString())
+//                                        .addOnCompleteListener(Profile.this, new OnCompleteListener<AuthResult>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    // Sign in success, update UI with the signed-in user's information
+//                                                    Log.d("TAG", "createUserWithEmail:success");
+//                                                    FirebaseUser user = mAuth.getCurrentUser();
+//                                                } else {
+//                                                    // If sign in fails, display a message to the user.
+//                                                    Log.w("TAG", "createUserWithEmail:failure", task.getException());
+//                                                    Toast.makeText(Profile.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+//                                                }
+//
+//                                            }
+//                                        });
+//
+//
+//
+//
+//
+//
+//
+//                                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//
+//                                    @Override
+//                                    public void onSuccess(Uri uri) {
+//
+//
+//                                        UserDomain userDomain = new UserDomain(FirstName.getText().toString(), LastName.getText().toString(), Email.getText().toString(), UserName.getText().toString(), Password.getText().toString(), uri.toString(), uuid);
+//                                        db.collection("Users").document(personId).set(userDomain);
+//
+//                                        System.out.println("ProfileActivity: " +userDomain.email);
+//                                        editor.putString("CurrentUser",userDomain.email);
+//
+//                                        editor.commit();
+//
+//
+//                                    }
+//                                });
+//
+//
+//                            }
+//                        } else {
+//                            Log.d("TAG", "failure", task.getException());
+//                        }
+//                    }
+//                });
+
 
 
             }
@@ -257,10 +288,6 @@ public class Profile extends AppCompatActivity {
 
         });
     }
-
-
-
-
 
 
     @Override
