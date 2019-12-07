@@ -1,14 +1,8 @@
 package com.example.chatapplication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.MessageQueue;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -16,16 +10,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.lang.Long;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class TripChatActivity extends AppCompatActivity {
@@ -106,6 +107,32 @@ public class TripChatActivity extends AppCompatActivity {
                         } else {
                             Log.d("TAG", "get failed with ", task.getException());
                         }
+                    }
+                });
+            }
+        });
+
+        GroupName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseFirestore db  = FirebaseFirestore.getInstance();
+                final DocumentReference documentReference = db.collection("Trips").document(tripId);
+                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        System.out.println("DOCUMENT SNAPSHOT: "+ documentSnapshot.toString());
+                        Map<Double,Double> destinationMap = (Map<Double, Double>) documentSnapshot.getData().get("destination");
+                        LatLng destination = new LatLng(destinationMap.get("latitude"),destinationMap.get("longitude") );
+
+                        Map<Double,Double> start_positionMap = (Map<Double, Double>) documentSnapshot.getData().get("start_postion");
+                        LatLng start = new LatLng(start_positionMap.get("latitude"),start_positionMap.get("longitude") );
+
+                        Intent intent1 = new Intent(TripChatActivity.this,TripMapActivity.class);
+                        Bundle args = new Bundle();
+                        args.putParcelable("start_position", start);
+                        args.putParcelable("destination", destination);
+                        intent1.putExtra("bundle",args);
+                        startActivityForResult(intent1,1);
                     }
                 });
             }
