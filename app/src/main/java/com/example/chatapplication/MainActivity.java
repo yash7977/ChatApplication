@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -87,14 +88,15 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()){
                                 DocumentSnapshot document = task.getResult();
                                 if(document.exists()){
+
                                     Intent intent = new Intent(MainActivity.this,TabsExample.class);
                                     String uniqueId = (String) document.getData().get("uniqueId");
-                                    editor.putString("CurrentUser",uuid);
+                                    editor.putString("CurrentUser",uniqueId);
                                     editor.putString("PersonId",account.getId());
                                     editor.apply();
                                     startActivity(intent);
                                 }else{
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
                                     UserDomain userDomain = new UserDomain(account.getGivenName(),account.getFamilyName(),account.getEmail(),account.getDisplayName(),null,account.getPhotoUrl().toString(), uuid);
                                     Intent intent = new Intent(MainActivity.this,Profile.class);
